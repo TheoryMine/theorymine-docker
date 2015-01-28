@@ -6,14 +6,19 @@ MAINTAINER Lucas Dixon <lucas.dixon@gmail.com>
 # Install additional ubuntu deps for Isabelle/PolyML
 COPY docker-setup /docker-setup
 
-# Install the necessary base packages
+# Install the necessary base packages for Isabelle/TheoryMine theorem
+# generation
 RUN apt-get update && apt-get install -y \
   g++ \
   git \
   make \
   openjdk-6-jre \
   subversion \
-  wget \
+  wget
+
+# Install additional packages for latex/certifictae/image generation
+RUN apt-get install -y \
+  imagemagick \
   curl \
   texlive-latex-extra
 
@@ -41,10 +46,24 @@ RUN cd /usr/local && \
 # Make sure an ssh-agent is running and then clone the math robot and build
 # the base-logic for it
 RUN eval "$(ssh-agent -s)" && \
-  chmod 600 /docker-setup/github-keys/theorymine-gmail-github_rsa && \
-  ssh-add /docker-setup/github-keys/theorymine-gmail-github_rsa && \
-  echo `ssh -T -o StrictHostKeyChecking=no -o "VerifyHostKeyDNS yes" git@github.com` && \
-  cd /usr/local && \
+  chmod 600 /docker-setup/github-keys/theorymine-gmail-mathbot-github_rsa && \
+  ssh-add /docker-setup/github-keys/theorymine-gmail-mathbot-github_rsa && \
+  chmod 600 /docker-setup/github-keys/theorymine-gmail-website-github_rsa && \
+  ssh-add /docker-setup/github-keys/theorymine-gmail-website-github_rsa && \
+  echo `ssh -T -o StrictHostKeyChecking=no -o VerifyHostKeyDNS=yes git@github.com`
+
+# NOTE: if you already have a docker image, and just want to update it to get
+# the theorymine latest clone of repo's from github, update the ID on this echo
+# line e.g. `echo "id:2"` to avoid docker's cache.
+RUN echo "id:1"
+
+# Install the math-robot.
+RUN cd /usr/local && \
   git clone git@github.com:TheoryMine/math-robot.git && \
   cd /usr/local/math-robot/isabelle-code-2009-2 && \
   /usr/local/Isabelle/bin/isabelle make
+
+# Install the website code (includes code for certificate generation using
+# latex etc).
+RUN cd /usr/local && \
+  git clone git@github.com:TheoryMine/theorymine-website.git
