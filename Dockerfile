@@ -14,13 +14,15 @@ RUN apt-get update && apt-get install -y \
   make \
   openjdk-6-jre \
   subversion \
-  wget
+  wget \
+  nano
 
 # Install additional packages for latex/certifictae/image generation
 RUN apt-get install -y \
   imagemagick \
   curl \
-  texlive-latex-extra
+  texlive-latex-extra \
+  latex-cjk-all
 
 # Install Isabelle-2009-2
 RUN cd /tmp && wget http://isabelle.in.tum.de/website-Isabelle2009-2/dist/Isabelle2009-2_bundle_x86-linux.tar.gz && tar zxf Isabelle2009-2_bundle_x86-linux.tar.gz -C /usr/local

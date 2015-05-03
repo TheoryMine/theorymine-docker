@@ -1,4 +1,6 @@
 #!/bin/env bash
+# Make sure errors result in the script stopping at the error.
+set -e
 
 # Assumes a linux environment: Ubutnu 14
 
@@ -8,16 +10,16 @@ apt-get install -y openjdk-6-jre git g++ subversion wget make
 
 # Install Isabelle-2009-2
 cd /tmp
-wget http://isabelle.in.tum.de/website-Isabelle2009-2/dist/Isabelle2009-2_bundle_x86-linux.tar.gz 
-tar zxf Isabelle2009-2_bundle_x86-linux.tar.gz -C /usr/local 
+wget http://isabelle.in.tum.de/website-Isabelle2009-2/dist/Isabelle2009-2_bundle_x86-linux.tar.gz
+tar zxf Isabelle2009-2_bundle_x86-linux.tar.gz -C /usr/local
 
 # Remove it's pref-configured, but broken for this linux, polyml builds
 rm -r /usr/local/Isabelle/contrib/polyml/x86*
 
-# Build polyml 
-cd /usr/local/Isabelle/contrib/polyml/src/ 
-./configure 
-make 
+# Build polyml
+cd /usr/local/Isabelle/contrib/polyml/src/
+./configure
+make
 # Sym-link so that Poly is where Isabelle expects it to be.
 ln -s /usr/local/Isabelle/contrib/polyml/src/poly /usr/local/bin/poly
 
