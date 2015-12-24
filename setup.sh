@@ -63,13 +63,14 @@ function runCmd ()
 # Setup local directories that will be shared with the docker containers.
 runAndAssertCmd "mkdir -p shared_directories"
 
-if [! -a "$SHARED_DIR/math-robot" ] then
+if [! -a "$SHARED_DIR/math-robot" ]; then
  runAndAssertCmd "git clone git@github.com:TheoryMine/math-robot.git \
-   shared_directories/math-robot"
+   shared_directories/math-robot";
 fi
-if [! -a "$SHARED_DIR/theorymine-website" ] then
+
+if [! -a "$SHARED_DIR/theorymine-website" ]; then
  runAndAssertCmd "git clone git@github.com:TheoryMine/theorymine-website.git \
-   shared_directories/theorymine-website"
+   shared_directories/theorymine-website";
 fi
 
 runAndAssertCmd "docker build -t theorymine/isaplanner:2009.2 \

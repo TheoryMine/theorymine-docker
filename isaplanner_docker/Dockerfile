@@ -21,6 +21,11 @@ RUN apt-get install -y \
   texlive-latex-extra \
   latex-cjk-all
 
+# Install additional php tools
+RUN apt-get install -y \
+  php5 \
+  php5-mcrypt
+
 # Install Isabelle-2009-2
 RUN cd /tmp && wget http://isabelle.in.tum.de/website-Isabelle2009-2/dist/Isabelle2009-2_bundle_x86-linux.tar.gz && tar zxf Isabelle2009-2_bundle_x86-linux.tar.gz -C /usr/local
 
@@ -37,6 +42,7 @@ RUN /usr/local/Isabelle/bin/isabelle makeall
 
 # Download and build IsaPlanner/IsaCosy for Isabelle2009-2
 RUN cd /usr/local && \
+  # git clone
   svn checkout svn://svn.code.sf.net/p/isaplanner/code/trunk/IsaPlanner/IsaPlanner-2009-2 && \
   cd /usr/local/IsaPlanner-2009-2/ && \
   /usr/local/Isabelle/bin/isabelle make
