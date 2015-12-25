@@ -1,2 +1,3 @@
-shared_directories
+docker_shared_dir
+external_deps
 tmp

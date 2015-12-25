@@ -1,7 +1,8 @@
-theorymine-docker
-=================
+# theorymine-docker
 
-This repo contains the tools and Docker image to setup TheoryMine. You first need to have [docker](https://www.docker.com/) installed.
+This repo contains the tools and Docker image to setup TheoryMine. It assumes you have [docker](https://www.docker.com/) installed and setup.
+
+## Install and setup of theorymine-docker
 
 ```
 # Get a checkout of theorymine-docker.
@@ -10,54 +11,70 @@ cd theorymine-docker
 
 # Build the docker image for IsaPlanner
 sh ./setup.sh
-
-## in the future: docker build -t theorymine/theorymine-image .
 ```
 
 To enter a docker environment with IsaPlanner setup and get a bash shell there, you can then run:
+
 ```
-docker run -v $(pwd)/shared_directories/:/theorymine -t -i theorymine/isaplanner:2009.2 /bin/bash
+docker run -v $(pwd)/docker_shared_dir/:/theorymine/docker_shared_dir \
+  -i -t theorymine/theorymine:2015.0.2 \
+  /bin/bash
 ```
 
-From that shell you can then do this:
+From that shell you can then run theorem synthesis.
+
+
+## To mine theorems
+
+From within the Docker environment:
+
 ```
-cd /theorymine/math-robot/isabelle-code-2009-2
+cd /theorymine/math-robot/
 pico run_synth.thy
 ## Now edit the params at the bottom of the file, save and quit.
-/usr/local/Isabelle/bin/isabelle make
+/usr/local/Isabelle2015/bin/isabelle build \
+  -d /usr/local/Isabelle2015/contrib/IsaPlanner \
+  -d . -b RunSynth
 ```
 
 In a separate bash invironment, you can then do this to see the logs:
 ```
 docker ps
-# Then look at the docker container name and set it to an env variable e.g.
+```
 
+Then look at the docker container name and set it to an env variable e.g.
+
+```
 export THEORYMINE_CONTAINER=kickass_snyder
 
-docker exec -t -i $THEORYMINE_CONTAINER /bin/bash
+docker exec -t -i /bin/bash
 ```
 
-Now, from that docker container shell, you can do things like this:
+Now, from that docker container shell, you can look at the generated theorems:
 
 ```
-# Look at the the output directory to see what functions generated theorems:
-cd /theorymine/math-robot/isabelle-code-2009-2
-ls output
-
-# Look at the logs:
-tail -n 1000 -f /root/.isabelle/heaps/Isabelle2009-2/polyml-5.3.0_x86-linux/log/tm_initial_
+ls /theorymine/math-robot/output
 ```
 
-To upload theorems:
+or look at the logs when things go wrong:
+```
+tail -n 1000 \
+  -f /root/.isabelle/Isabelle2015/heaps/polyml-5.5.2_x86_64-linux/log/RunSynth
+```
+
+## To upload theorems
+
 ```
 php upload_theorems.php output DOMAIN PASSWORD
 ```
 
-To generate certificates:
+
+## To generate certificates
+
 ```
 docker run \
-  -v $(pwd)/shared_directories/:/theorymine \
+  -v $(pwd)/docker_shared_dir/:/theorymine/docker_shared_dir \
   -v $HOME/tmp/outside-of-docker-theorymine:/tmp/inside-of-docker-theorymine \
-  -t -i theorymine/isaplanner:2009.2 \
+  -i -t theorymine/isaplanner:2015.0.2 \
   /bin/bash
 ```

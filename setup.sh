@@ -6,7 +6,8 @@ set -e
 # directory it is within.
 ROOT_DIR="$(cd "$(dirname $0)"; pwd)";
 TMP_DIR="$ROOT_DIR/tmp"
-SHARED_DIR="$ROOT_DIR/shared_directory"
+DEPS_DIR="$ROOT_DIR/external_deps"
+SHARED_DIR="$ROOT_DIR/docker_shared_dir"
 
 
 #--------------------------------------
@@ -61,20 +62,34 @@ function runCmd ()
 }
 
 # Setup local directories that will be shared with the docker containers.
-runAndAssertCmd "mkdir -p shared_directories"
+runAndAssertCmd "mkdir -p $DEPS_DIR"
 
-if [! -a "$SHARED_DIR/math-robot" ]; then
- runAndAssertCmd "git clone git@github.com:TheoryMine/math-robot.git \
-   shared_directories/math-robot";
+if [ ! -d "$DEPS_DIR/IsaPlanner" ]; then
+ runAndAssertCmd "git clone \
+   --branch 2015.0.2 \
+   https://github.com/TheoryMine/IsaPlanner.git \
+   $DEPS_DIR/IsaPlanner";
 fi
 
-if [! -a "$SHARED_DIR/theorymine-website" ]; then
- runAndAssertCmd "git clone git@github.com:TheoryMine/theorymine-website.git \
-   shared_directories/theorymine-website";
+if [ ! -d "$DEPS_DIR/math-robot" ]; then
+ runAndAssertCmd "git clone \
+   --branch 2015.0.2 \
+   https://github.com:TheoryMine/math-robot.git \
+   $DEPS_DIR/math-robot";
 fi
 
-runAndAssertCmd "docker build -t theorymine/isaplanner:2009.2 \
-  ./isaplanner_docker/"
+if [ ! -d "$DEPS_DIR/theorymine-website" ]; then
+ runAndAssertCmd "git clone \
+   --branch 2015.0.0 \
+   https://github.com:TheoryMine/theorymine-website.git \
+   $DEPS_DIR/theorymine-website";
+fi
+
+runAndAssertCmd "docker build -t theorymine/isaplanner:2015.0.2 \
+  $DEPS_DIR/IsaPlanner/"
+
+runAndAssertCmd "docker build -t theorymine/theorymine:2015.0.2 ."
 
 # The tmp directory is for
-runAndAssertCmd "mkdir -p tmp"
+runAndAssertCmd "mkdir -p $SHARED_DIR"
+
