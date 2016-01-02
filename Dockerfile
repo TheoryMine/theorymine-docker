@@ -13,9 +13,8 @@ RUN apt-get install -y \
 # this point.
 RUN echo "id:1"
 
-# Copy external dependencies into docker filespace.
+# Copy MathRobot into the docker filespace.
 COPY external_deps/math-robot /theorymine/math-robot
-COPY external_deps/theorymine-website /theorymine/theorymine-website
 
 # Create the Isabelle image for the math-robot.
 RUN cd /theorymine/math-robot/ && \
@@ -23,3 +22,6 @@ RUN cd /theorymine/math-robot/ && \
     -d /usr/local/Isabelle2015/contrib/IsaPlanner \
     -d . \
     -b HOL-TheoryMine
+
+# Copy the website files into the docker filespace.
+COPY external_deps/theorymine-website /theorymine/theorymine-website

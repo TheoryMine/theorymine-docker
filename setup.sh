@@ -80,7 +80,7 @@ fi
 
 if [ ! -d "$DEPS_DIR/theorymine-website" ]; then
  runAndAssertCmd "git clone \
-   --branch 2015.0.0 \
+   --branch 2015.0.1 \
    https://github.com:TheoryMine/theorymine-website.git \
    $DEPS_DIR/theorymine-website";
 fi
