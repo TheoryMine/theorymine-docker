@@ -87,7 +87,7 @@ cd /theorymine/theorymine-website/
 # Set the certificate id here...
 export THEORYMINE_CERT_ID=80103f9220724a9a9b765619d77237aef8d8
 ./run_certificate_generation.sh $THEORYMINE_CERT_ID
-mv /theorymine/docker_shared_dir/
+mv "generated_certificates/$THEORYMINE_CERT_ID" /theorymine/docker_shared_dir/
 ```
 
 This will put generated certificate files to be uploaded into the directory local `docker_shared_dir/`, which you can then upload using the website's admin interface.
