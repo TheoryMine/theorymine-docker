@@ -74,14 +74,14 @@ fi
 if [ ! -d "$DEPS_DIR/math-robot" ]; then
  runAndAssertCmd "git clone \
    --branch 2015.0.2 \
-   https://github.com:TheoryMine/math-robot.git \
+   https://github.com/TheoryMine/math-robot.git \
    $DEPS_DIR/math-robot";
 fi
 
 if [ ! -d "$DEPS_DIR/theorymine-website" ]; then
  runAndAssertCmd "git clone \
    --branch 2015.0.2 \
-   https://github.com:TheoryMine/theorymine-website.git \
+   https://github.com/TheoryMine/theorymine-website.git \
    $DEPS_DIR/theorymine-website";
 fi
 
