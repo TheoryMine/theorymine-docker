@@ -10,7 +10,7 @@ git clone git@github.com:TheoryMine/theorymine-docker.git
 cd theorymine-docker
 
 # Build the docker image for IsaPlanner
-sh ./setup.sh
+python ./setup.py
 ```
 
 To enter a docker environment with IsaPlanner setup and get a bash shell there, you can then run:
