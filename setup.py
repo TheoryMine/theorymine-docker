@@ -112,7 +112,7 @@ def main(argv):
 
   d = DEPS_DIR + '/IsaPlanner';
   gitrepo.path = 'TheoryMine/IsaPlanner.git';
-  cmd = ['git', 'clone', '--branch=2015.0.2', gitrepo.get_git_clone_command(),
+  cmd = ['git', 'clone', '--branch=2015.0.3', gitrepo.get_git_clone_command(),
          d]
   if not os.path.isdir(d):
     call_or_die(cmd)
