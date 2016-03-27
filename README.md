@@ -17,7 +17,7 @@ To enter a docker environment with IsaPlanner setup and get a bash shell there, 
 
 ```
 docker run -v $(pwd)/docker_shared_dir/:/theorymine/docker_shared_dir \
-  -i -t theorymine/theorymine:2015.0.2 \
+  -i -t theorymine/theorymine \
   /bin/bash
 ```
 
@@ -75,20 +75,24 @@ From this directory, run:
 
 ```
 docker run \
-  -v $(pwd)/docker_shared_dir/:/theorymine/docker_shared_dir \
-  -i -t theorymine/theorymine:2015.0.2 \
+  -v $(pwd)/docker_shared_dir/:/theorymine/theorymine-website/generated_certificates \
+  -w /theorymine/theorymine-website/ \
+  -i -t theorymine/theorymine \
   /bin/bash
 ```
 
-Then in the started docker shell (in the same command line with the new docker prompt), you can run:
+Then in the started docker shell (in the same command line with the new docker
+prompt), you can run:
 
 ```
 cd /theorymine/theorymine-website/
 # Set the certificate id here...
 export THEORYMINE_CERT_ID=80103f9220724a9a9b765619d77237aef8d8
 ./run_certificate_generation.sh $THEORYMINE_CERT_ID
-mv "generated_certificates/$THEORYMINE_CERT_ID" /theorymine/docker_shared_dir/
 ```
 
-This will put generated certificate files to be uploaded into the directory local `docker_shared_dir/`, which you can then upload using the website's admin interface.
+This will put generated certificate files to be uploaded into the docker-
+environments directory `/theorymine/generated_certificates/$THEORYMINE_CERT_ID`
+which is mapped to the local directory `docker_shared_dir/`, which you can then
+upload using the website's admin interface.
 
