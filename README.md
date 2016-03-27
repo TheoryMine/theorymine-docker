@@ -71,6 +71,16 @@ php upload_theorems.php output DOMAIN PASSWORD
 
 ## To generate certificates
 
+Run:
+```
+export THEORYMINE_CERT_ID=8046b28b5216e4ac9daed8ffcc685199c4d6
+./generate_certificate.sh $THEORYMINE_CERT_ID
+```
+This will put the generated certificate files into a directory
+`docker_shared_dir/$THEORYMINE_CERT_ID`
+
+### To generate certificates from within a docker container
+
 From this directory, run:
 
 ```
