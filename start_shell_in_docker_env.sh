@@ -4,4 +4,4 @@ docker run \
   -w /theorymine/theorymine-website/ \
   -ti \
   theorymine/theorymine \
-  /bin/bash -c
+  /bin/bash
