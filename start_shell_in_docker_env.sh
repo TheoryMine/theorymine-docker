@@ -1,6 +1,7 @@
-# Creates a certificate using the docker environment.
+# start an interactive bash shell in the docker environment.
 docker run \
   -v $(pwd)/docker_shared_dir/:/theorymine/theorymine-website/generated_certificates \
   -w /theorymine/theorymine-website/ \
+  -ti \
   theorymine/theorymine \
-  /bin/bash -c "/theorymine/theorymine-website/run_certificate_generation.sh $1"
+  /bin/bash -c
