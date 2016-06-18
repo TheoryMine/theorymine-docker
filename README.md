@@ -4,7 +4,7 @@ This repo contains the tools and Docker image to setup TheoryMine. It assumes yo
 
 ## Install and setup of theorymine-docker
 
-```
+```bash
 # Get a checkout of theorymine-docker.
 git clone git@github.com:TheoryMine/theorymine-docker.git
 cd theorymine-docker
@@ -15,7 +15,7 @@ python ./setup.py
 
 To enter a docker environment with IsaPlanner setup and get a bash shell there, you can then run:
 
-```
+```bash
 docker run -v $(pwd)/docker_shared_dir/:/theorymine/docker_shared_dir \
   -i -t theorymine/theorymine \
   /bin/bash
@@ -28,7 +28,7 @@ From that shell you can then run theorem synthesis.
 
 From within the Docker environment:
 
-```
+```bash
 cd /theorymine/math-robot/
 pico run_synth.thy
 ## Now edit the params at the bottom of the file, save and quit.
@@ -38,13 +38,14 @@ pico run_synth.thy
 ```
 
 In a separate bash invironment, you can then do this to see the logs:
-```
+
+```bash
 docker ps
 ```
 
 Then look at the docker container name and set it to an env variable e.g.
 
-```
+```bash
 export THEORYMINE_CONTAINER=kickass_snyder
 
 docker exec -t -i /bin/bash
@@ -52,19 +53,20 @@ docker exec -t -i /bin/bash
 
 Now, from that docker container shell, you can look at the generated theorems:
 
-```
+```bash
 ls /theorymine/math-robot/output
 ```
 
 or look at the logs when things go wrong:
-```
+
+```bash
 tail -n 1000 \
   -f /root/.isabelle/Isabelle2015/heaps/polyml-5.5.2_x86_64-linux/log/RunSynth
 ```
 
 ## To upload theorems
 
-```
+```bash
 php upload_theorems.php output DOMAIN PASSWORD
 ```
 
@@ -72,18 +74,20 @@ php upload_theorems.php output DOMAIN PASSWORD
 ## To generate certificates
 
 Run:
-```
+
+```bash
 export THEORYMINE_CERT_ID=8046b28b5216e4ac9daed8ffcc685199c4d6
 ./generate_certificate.sh $THEORYMINE_CERT_ID
 ```
+
 This will put the generated certificate files into a directory
 `docker_shared_dir/$THEORYMINE_CERT_ID`
 
-### To generate certificates from within a docker container
+#### To generate certificates from within a docker container
 
 From this directory, run:
 
-```
+```bash
 docker run \
   -v $(pwd)/docker_shared_dir/:/theorymine/theorymine-website/generated_certificates \
   -w /theorymine/theorymine-website/ \
@@ -94,7 +98,7 @@ docker run \
 Then in the started docker shell (in the same command line with the new docker
 prompt), you can run:
 
-```
+```bash
 cd /theorymine/theorymine-website/
 # Set the certificate id here...
 export THEORYMINE_CERT_ID=80103f9220724a9a9b765619d77237aef8d8
@@ -106,3 +110,10 @@ environments directory `/theorymine/generated_certificates/$THEORYMINE_CERT_ID`
 which is mapped to the local directory `docker_shared_dir/`, which you can then
 upload using the website's admin interface.
 
+## To upload certificates
+
+Once certificate files have been generated for a theorem (they are in the `docker_shared_dir` directory), you can upload them to the website with:
+
+```bash
+./upload_certificate_files.py $THEORYMINE_CERT_ID
+```
