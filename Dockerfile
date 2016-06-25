@@ -1,6 +1,6 @@
 # Docker file for TheoryMine
 
-FROM theorymine/isaplanner:2015.0.2
+FROM theorymine/isaplanner
 MAINTAINER Lucas Dixon <lucas.dixon@gmail.com>
 
 # Install additional php tools
