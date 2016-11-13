@@ -3,7 +3,7 @@
 This script uploads generated certificate files to theorymine website.
 
 This saves lots of clicking and uploading by hand. You call it by providing
-a single argument that is the certificate id (also the name of the directory 
+a single argument that is the certificate id (also the name of the directory
 in docker_shared_dir that contains the files to be uploaded).
 """
 import subprocess
@@ -34,11 +34,11 @@ def main(argv):
   dir_name = argv[1]
   cprint.green('certificate id: %s' % dir_name)
 
-  files = ['brouchure.pdf', 'certificate.pdf', 'certificate_image.jpg', 
+  files = ['brouchure.pdf', 'certificate.pdf', 'certificate_image.jpg',
            'thm.jpg', 'thm.pdf', 'thy.jpg', 'thy.pdf']
 
-  cprint.yellow("auth...")   
-  r = requests.post(url='http://theorymine.co.uk/?go=admin', 
+  cprint.yellow("auth...")
+  r = requests.post(url='http://theorymine.co.uk/?go=admin',
                     headers={"User-Agent": FAKE_USER_AGENT},
                     data={'admin_pass':'P$^vtpX'})
   cookies = r.cookies;
