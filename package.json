@@ -1,0 +1,36 @@
+{
+  "name": "@theorymine/theorymine-docker",
+  "description": "",
+  "repository": "",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "scripts": {
+    "setup": "mkdir -p build/ && mkdir -p build/config/ && rsync --ignore-existing config.template.json build/config/config.json",
+    "build": "tsc --outdir build/tools/",
+    "build:watch": "tsc --outdir build/tools/ --watch",
+    "test": "mocha build/tools/*_test.js"
+  },
+  "dependencies": {
+    "@types/escape-string-regexp": "^0.0.32",
+    "@types/fs-extra": "^4.0.3",
+    "concurrently": "^3.4.0",
+    "escape-string-regexp": "^1.0.5",
+    "fs-extra": "^4.0.2",
+    "googleapis": "^17.0.0",
+    "nodemon": "^1.12.1",
+    "request": "^2.78.0",
+    "yargs": "^8.0.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/cors": "^2.8.1",
+    "@types/mocha": "^2.2.41",
+    "@types/passport": "^0.3.4",
+    "@types/request": "^2.0.4",
+    "@types/yargs": "^8.0.2",
+    "chai": "^4.1.2",
+    "tslint": "^4.5.1",
+    "typedoc": "^0.5.7",
+    "typescript": "^2.4.2"
+  }
+}
