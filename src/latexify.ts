@@ -72,6 +72,8 @@ async function main(args : Args) {
     date: latexJsonBits.date,
     proof: 'Proof outline: by induction and rippling',
   }
+  console.log('certificateLatexData, Latex-ready:');
+  console.log(JSON.stringify(certificateLatexData, null, 2));
 
   const replacements : {[match:string]:string} = {}
   replacements['*********THEOREM_NAME*********'] = certificateLatexData.thm_title
@@ -113,33 +115,44 @@ async function main(args : Args) {
 
   console.log('Processing certificate...');
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `pdflatex -interaction nonstopmode -output-format pdf certificate.tex`);
+    `pdflatex -interaction nonstopmode -output-format pdf certificate.tex`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `pdflatex -interaction nonstopmode -output-format pdf certificate.tex`);
+    `pdflatex -interaction nonstopmode -output-format pdf certificate.tex`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `convert -density 400 certificate.pdf certificate_image.jpg`);
+    `convert -density 400 certificate.pdf certificate_image.jpg`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
 
   console.log('Processing thm...');
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `pdflatex -interaction nonstopmode -output-format pdf thm.tex`);
+    `pdflatex -interaction nonstopmode -output-format pdf thm.tex`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `pdflatex -interaction nonstopmode -output-format pdf thm.tex`);
+    `pdflatex -interaction nonstopmode -output-format pdf thm.tex`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `convert -gravity South -chop 0x4000 -density 400 "thm.pdf" "thm.jpg"`);
+    `convert -gravity South -chop 0x4000 -density 400 "thm.pdf" "thm.jpg"`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
 
   console.log('Processing thy...');
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `pdflatex -interaction nonstopmode -output-format pdf thy.tex`);
+    `pdflatex -interaction nonstopmode -output-format pdf thy.tex`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `pdflatex -interaction nonstopmode -output-format pdf thy.tex`);
+    `pdflatex -interaction nonstopmode -output-format pdf thy.tex`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `convert -gravity South -chop 0x1000 -density 400 "thy.pdf" "thy.jpg"`);
+    `convert -gravity South -chop 0x1000 -density 400 "thy.pdf" "thy.jpg"`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
 
   console.log('Processing brouchure...');
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `pdflatex -interaction nonstopmode -output-format pdf brouchure.tex`);
+    `pdflatex -interaction nonstopmode -output-format pdf brouchure.tex`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
   child_process.execSync(`cd ${args.outputDir} && ` +
-    `pdflatex -interaction nonstopmode -output-format pdf brouchure.tex`);
+    `pdflatex -interaction nonstopmode -output-format pdf brouchure.tex`,
+    {stdio:[process.stdin, process.stdout, process.stderr]});
 
   console.log(`Output to: ${args.outputDir}`)
 }
