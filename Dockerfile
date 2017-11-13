@@ -11,7 +11,12 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install --upgrade pip && pip install --upgrade virtualenv
 
+RUN mkdir -p /theorymine/
+WORKDIR /theorymine/
+
 RUN npm install -g yarn typescript mocha
+RUN yarn install
+RUN yarn run build
 
 # NOTE: if you already have a docker image, but want to update it to get
 # the latest local files, you can update the ID which will invalidate cache at
@@ -31,4 +36,3 @@ RUN cd /theorymine/math-robot/ && \
 # Copy the website files into the docker filespace.
 COPY external_deps/theorymine-website /theorymine/theorymine-website
 
-RUN yarn install
