@@ -23,7 +23,6 @@ docker run -v $(pwd)/docker_shared_dir/:/theorymine/docker_shared_dir \
 
 From that shell you can then run theorem synthesis.
 
-
 ## To mine theorems
 
 From within the Docker environment:
@@ -47,8 +46,7 @@ Then look at the docker container name and set it to an env variable e.g.
 
 ```bash
 export THEORYMINE_CONTAINER=kickass_snyder
-
-docker exec -t -i /bin/bash
+docker exec -t -i $THEORYMINE_CONTAINER /bin/bash
 ```
 
 Now, from that docker container shell, you can look at the generated theorems:
@@ -70,18 +68,38 @@ tail -n 1000 \
 php upload_theorems.php output DOMAIN PASSWORD
 ```
 
-
 ## To generate certificates
 
-Run:
+To download the `latex_bits.json` file from the web, and the use it to
+generate local latex files and build them to create the PDFs and JPG
+images for certificates run the following:
 
 ```bash
 export THEORYMINE_CERT_ID=8046b28b5216e4ac9daed8ffcc685199c4d6
-./generate_certificate.sh $THEORYMINE_CERT_ID
+node build/tools/latexify.js \
+  --inputCid=$THEORYMINE_CERT_ID \
+  --outputDir=docker_shared_dir/$THEORYMINE_CERT_ID
 ```
 
 This will put the generated certificate files into a directory
 `docker_shared_dir/$THEORYMINE_CERT_ID`
+
+You can re-create the latex files
+(without downloading an update `latex_bits.json` file) using:
+
+```
+node build/tools/latexify.js \
+  --inputFile=docker_shared_dir/$THEORYMINE_CERT_ID/latex_bits.json \
+  --outputDir=docker_shared_dir/$THEORYMINE_CERT_ID
+```
+
+If you hack the latex locally, and just want to rerun the `pdflatex` and
+`convert` commands to regenerate the pdfs and jpgs, run:
+
+```
+node build/tools/latexify.js \
+  --outputDir=docker_shared_dir/$THEORYMINE_CERT_ID
+```
 
 #### To generate certificates from within a docker container
 
@@ -116,4 +134,26 @@ Once certificate files have been generated for a theorem (they are in the `docke
 
 ```bash
 ./upload_certificate_files.py $THEORYMINE_CERT_ID
+```
+
+## Local setup (For debugging, and working outside of Docker)
+
+Install latex, node (and npm, using [nvm](https://github.com/creationix/nvm#installation)), php, python, pip.
+
+Install the relevant global npm packages:
+
+```
+npm install -g yarn typescript mocha
+```
+
+Install local node package dependencies (specified in the package.json file):
+
+```
+yarn install
+```
+
+Build the typescript/node code locally (used for top-level scripting):
+
+```
+yarn run build
 ```

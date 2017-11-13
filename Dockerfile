@@ -6,9 +6,17 @@ MAINTAINER Lucas Dixon <lucas.dixon@gmail.com>
 # Install additional php tools
 RUN apt-get update && apt-get install -y \
   php5 php5-mcrypt \
-  python-pip
+  python-pip \
+  nodejs npm
 
 RUN pip install --upgrade pip && pip install --upgrade virtualenv
+
+RUN mkdir -p /theorymine/
+WORKDIR /theorymine/
+
+RUN npm install -g yarn typescript mocha
+RUN yarn install
+RUN yarn run build
 
 # NOTE: if you already have a docker image, but want to update it to get
 # the latest local files, you can update the ID which will invalidate cache at
@@ -25,7 +33,6 @@ RUN cd /theorymine/math-robot/ && \
     -d . \
     -b HOL-TheoryMine
 
-
-
 # Copy the website files into the docker filespace.
 COPY external_deps/theorymine-website /theorymine/theorymine-website
+

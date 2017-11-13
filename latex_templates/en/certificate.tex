@@ -1,0 +1,92 @@
+\documentclass[a4paper]{article}
+\usepackage[paper=a4paper, top=2cm, bottom=1.4cm, left=1.3cm, right=1.3cm]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fix-cm}
+\usepackage{euler}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{eso-pic}
+\usepackage{helvet}
+\usepackage{url}
+\usepackage{CJK}
+
+% sets the background
+\newcommand\BackgroundPic{
+\put(-5,0){
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{images/background3.jpg}
+\vfill
+}}}
+
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\bool}{\text{Bool}}
+\newcommand{\nl}{\\}
+
+\linespread{3} % sets the space between lines to be correct when selectfont command is used
+
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+\pagestyle{empty}
+\AddToShipoutPicture*{\BackgroundPic}
+
+\begin{center}
+
+\fontsize{43}{0}\selectfont
+\emph{\textbf{\textit{TheoryMine}}}\\
+\vspace{0.2cm}
+\fontsize{15}{5}\selectfont
+CERTIFICATE OF REGISTRY\\
+\vspace{1.7cm}
+\fontsize{25}{5}\selectfont
+{\textbf{*********THEOREM_NAME*********}}\\
+\vspace{1.2cm}
+\fontsize{18}{2}\selectfont
+Let\\
+\vspace{0.1cm}
+
+\begin{eqnarray*}
+*********DATATYPE_DEF*********
+\end{eqnarray*}
+
+\begin{eqnarray*}
+*********FUNCTION_TYPE*********
+\end{eqnarray*}
+
+\begin{eqnarray*}
+*********FUNCTION_DEF*********
+\end{eqnarray*}
+
+\vspace{0.3cm}
+then
+
+\fontsize{22}{5}\selectfont
+\begin{eqnarray*}
+*********THEOREM*********
+\end{eqnarray*}
+
+\vspace{1cm}
+\fontsize{15}{5}\selectfont
+*********PROOF*********
+% $\square$
+\end{center}
+
+\vfill
+\fontsize{12}{5}\selectfont
+\noindent \textsc{\hspace{4.3cm}THIS THEOREM HAS BEEN NAMED AND RECORDED}
+
+\noindent \textsc{\hspace{4.3cm}IN THE THEORYMINE DATABASE}
+
+\vspace{1.3cm}
+
+\fontsize{10}{5}\selectfont
+
+\noindent \hspace{1cm} *********DATE*********
+
+\noindent \hspace{0.1cm} \noindent \url{www.theorymine.co.uk}
+
+\end{CJK}
+\end{document}
