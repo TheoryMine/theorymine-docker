@@ -3,3 +3,5 @@ external_deps
 tmp
 node_modules
 build
+.vscode
+.git

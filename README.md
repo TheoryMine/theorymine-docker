@@ -13,6 +13,13 @@ cd theorymine-docker
 python ./setup.py
 ```
 
+The key thing this does is build the needed docker images:
+
+```
+docker build -t theorymine/isaplanner external_deps/IsaPlanner/
+docker build -t theorymine/theorymine-docker .
+```
+
 To enter a docker environment with IsaPlanner setup and get a bash shell there, you can then run:
 
 ```bash
@@ -120,7 +127,7 @@ prompt), you can run:
 cd /theorymine/theorymine-website/
 # Set the certificate id here...
 export THEORYMINE_CERT_ID=80103f9220724a9a9b765619d77237aef8d8
-./run_certificate_generation.sh $THEORYMINE_CERT_ID
+# TODO(ldixon): write this bit.
 ```
 
 This will put generated certificate files to be uploaded into the docker-
