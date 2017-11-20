@@ -24,7 +24,6 @@ node build/tools/latexify.js \
   --inputFile=src/testdata/example_cert_latex_bits.json \
   --outputDir=tmp
 
-
 node build/tools/latexify.js \
   --inputCid=16327f93873b5723b3939d4b54223b226f39f \
   --outputDir=tmp
@@ -99,10 +98,16 @@ async function generateLatexFiles(latexJsonBits: LatexJsonBits, outputDir: strin
   let thyParts = theorymine_latex.thyToLatex(
     theorymine_latex.textToLatex(latexJsonBits.thy_body));
 
+  let thmBody = theorymine_latex.formulaToLatex(
+    theorymine_latex.textToLatex(latexJsonBits.thm_body));
+  console.log('*****: thmBody length: ' + thmBody.length);
+  if (thmBody.length > 80) {
+    thmBody = thmBody.replace('=', '=\\\\\n');
+  }
+
   const certificateLatexData = {
-    thm_title: theorymine_latex.textToLatex(latexJsonBits.thm_title),
-    thm_body: theorymine_latex.formulaToLatex(
-      theorymine_latex.textToLatex(latexJsonBits.thm_body)),
+    thmTitle: theorymine_latex.textToLatex(latexJsonBits.thm_title),
+    thmBody: thmBody,
     datatypeDef: thyParts.datatypeDef,
     functionType: thyParts.functionType,
     functionDef: thyParts.functionDef,
@@ -113,8 +118,8 @@ async function generateLatexFiles(latexJsonBits: LatexJsonBits, outputDir: strin
   console.log(JSON.stringify(certificateLatexData, null, 2));
 
   const replacements : {[match:string]:string} = {}
-  replacements['*********THEOREM_NAME*********'] = certificateLatexData.thm_title
-  replacements['*********THEOREM*********'] = certificateLatexData.thm_body;
+  replacements['*********THEOREM_NAME*********'] = certificateLatexData.thmTitle
+  replacements['*********THEOREM*********'] = certificateLatexData.thmBody;
   replacements['*********DATATYPE_DEF*********'] = certificateLatexData.datatypeDef;
   replacements['*********FUNCTION_TYPE*********'] = certificateLatexData.functionType;
   replacements['*********FUNCTION_DEF*********'] = certificateLatexData.functionDef;
@@ -165,6 +170,7 @@ async function main(args : Args) {
   }
 
   runTex(args.outputDir);
+  console.log(`outputDir: ${args.outputDir}`);
 }
 
 let args = yargs
