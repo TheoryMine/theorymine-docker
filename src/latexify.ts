@@ -50,7 +50,7 @@ interface LatexJsonBits {
 };
 
 
-function runTex(outputDir: string) {
+function runTex(outputDir: string) : void {
   console.log('Processing certificate...');
   child_process.execSync(`cd ${outputDir} && ` +
     `pdflatex -interaction nonstopmode -output-format pdf certificate.tex`,
@@ -157,10 +157,10 @@ async function main(args : Args) {
         path.join(args.outputDir, 'latex_bits.json'),
         result.body,
         { encoding: 'utf-8' });
-    generateLatexFiles(latexJsonBits, args.outputDir);
+    await generateLatexFiles(latexJsonBits, args.outputDir);
   } else if (args.inputFile) {
     latexJsonBits = JSON.parse(fs.readFileSync(args.inputFile, { encoding: 'utf-8' }));
-    generateLatexFiles(latexJsonBits, args.outputDir);
+    await generateLatexFiles(latexJsonBits, args.outputDir);
   }
 
   runTex(args.outputDir);
