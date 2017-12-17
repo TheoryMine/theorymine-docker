@@ -1,4 +1,6 @@
 docker_shared_dir
 tmp
 node_modules
+external_deps
 build
+*.pyc

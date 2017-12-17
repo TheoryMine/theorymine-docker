@@ -4,28 +4,47 @@ This repo contains the tools and Docker image to setup TheoryMine. It assumes yo
 
 ## Install and setup of theorymine-docker
 
+1. Get a checkout of theorymine-docker.
+
+  ```bash
+  git clone git@github.com:TheoryMine/theorymine-docker.git
+  cd theorymine-docker
+  ```
+
+2. Create a `config.json` file in the build directory, like so:
+
+  ```
+  echo \
+    '{ "server": "http://theorymine.com" }' \
+    > build/config.json
+  ```
+
+  In future, we'll be moving any passwords here, so that they don't live in the repository.
+
+3. Now you can setup the python environment and build the docker image:
+
+  ```
+  python ./setup.py
+  ```
+
+  The key thing this does is build the needed docker images:
+
+  ```
+  docker build -t theorymine/isaplanner external_deps/IsaPlanner/
+  docker build -t theorymine/theorymine .
+  ```
+
+## Do stuff in the docker environment
+
+Once the setup script is done, you can enter a docker environment with
+IsaPlanner and TheoryMine already setup, and get a bash shell by running
+`start_shell_in_docker_env.sh` which executes:
+
 ```bash
-# Get a checkout of theorymine-docker.
-git clone git@github.com:TheoryMine/theorymine-docker.git
-cd theorymine-docker
-
-# Build the docker image for IsaPlanner
-python ./setup.py
-```
-
-The key thing this does is build the needed docker images:
-
-```
-docker build -t theorymine/isaplanner external_deps/IsaPlanner/
-docker build -t theorymine/theorymine-docker .
-```
-
-Once the setup scrip tis done, you can enter a docker environment with
-IsaPlanner setup and get a bash shell there:
-
-```bash
-docker run -v $(pwd)/docker_shared_dir/:/theorymine/docker_shared_dir \
-  -i -t theorymine/theorymine \
+docker run \
+  -v $(pwd)/docker_shared_dir/:/theorymine/docker_shared_dir \
+  -ti \
+  theorymine/theorymine \
   /bin/bash
 ```
 
@@ -36,12 +55,12 @@ your external docker environment with the directory
 From that shell you can then run theorem synthesis,
 or certificate generation/processing.
 
-## To mine theorems
+## Mine theorems
 
 From within the Docker environment:
 
 ```bash
-cd /theorymine/math-robot/
+cd /theorymine/external_deps/math-robot/
 pico run_synth.thy
 ## Now edit the params at the bottom of the file, save and quit.
 /usr/local/Isabelle2015/bin/isabelle build \
@@ -49,39 +68,40 @@ pico run_synth.thy
   -d . -b RunSynth
 ```
 
-In a separate bash invironment, you can then do this to see the logs:
+In a separate bash environment, you can then do this to see the running docker environments:
 
 ```bash
 docker ps
 ```
 
-Then look at the docker container name and set it to an env variable e.g.
+Take a note of the name, and set it to an env variable e.g.
 
 ```bash
-export THEORYMINE_CONTAINER=kickass_snyder
+export THEORYMINE_CONTAINER=<name>
 docker exec -t -i $THEORYMINE_CONTAINER /bin/bash
 ```
 
-Now, from that docker container shell, you can look at the generated theorems:
+Now you have another shell in the same docker environment, and from that
+docker container shell you can look at the generated theorems:
 
 ```bash
-ls /theorymine/math-robot/output
+ls /theorymine/external_deps/math-robot/output
 ```
 
-or look at the logs when things go wrong:
+You can also look at the logs when things go wrong:
 
 ```bash
 tail -n 1000 \
   -f /root/.isabelle/Isabelle2015/heaps/polyml-5.5.2_x86_64-linux/log/RunSynth
 ```
 
-## To upload theorems
+## Upload theorems
 
 ```bash
 php upload_theorems.php output DOMAIN PASSWORD
 ```
 
-## To generate certificates
+## Generate certificates
 
 To download the `latex_bits.json` file from the web, and the use it to
 generate local latex files and build them to create the PDFs and JPG
@@ -114,32 +134,14 @@ node build/tools/latexify.js \
   --outputDir=docker_shared_dir/$THEORYMINE_CERT_ID
 ```
 
-#### To generate certificates from within a docker container
+To generate certificates from within a docker container, its the same as outside. You
+just first start with a shell in the docker environment.
 
-From this directory, run:
-
-```bash
-docker run \
-  -v $(pwd)/docker_shared_dir/:/theorymine/theorymine-website/generated_certificates \
-  -w /theorymine/theorymine-website/ \
-  -i -t theorymine/theorymine \
-  /bin/bash
-```
-
-Then in the started docker shell (in the same command line with the new docker
-prompt), you can run:
-
-```bash
-cd /theorymine/theorymine-website/
-# Set the certificate id here...
-export THEORYMINE_CERT_ID=80103f9220724a9a9b765619d77237aef8d8
-# TODO(ldixon): write this bit.
-```
-
-This will put generated certificate files to be uploaded into the docker-
-environments directory `/theorymine/generated_certificates/$THEORYMINE_CERT_ID`
-which is mapped to the local directory `docker_shared_dir/`, which you can then
-upload using the website's admin interface.
+It will put generated certificate files to be uploaded into the docker-
+environments directory `/theorymine/docker_shared_dir/$THEORYMINE_CERT_ID`
+which is mapped to the local directory `docker_shared_dir/` in the external environment,
+which you can then upload using the website's admin interface, or the upload script below
+(which can also be run from either inside or outside docker).
 
 ## To upload certificates
 

@@ -1,6 +1,9 @@
 docker_shared_dir
 tmp
 node_modules
-build
+build/tools
 .vscode
 .git
+*.pyc
+start_shell_in_docker_env.sh
+generate_certificate.sh
