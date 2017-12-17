@@ -1,5 +1,4 @@
 docker_shared_dir
-external_deps
 tmp
 node_modules
 build

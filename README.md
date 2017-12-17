@@ -20,7 +20,8 @@ docker build -t theorymine/isaplanner external_deps/IsaPlanner/
 docker build -t theorymine/theorymine-docker .
 ```
 
-To enter a docker environment with IsaPlanner setup and get a bash shell there, you can then run:
+Once the setup scrip tis done, you can enter a docker environment with
+IsaPlanner setup and get a bash shell there:
 
 ```bash
 docker run -v $(pwd)/docker_shared_dir/:/theorymine/docker_shared_dir \
@@ -28,7 +29,12 @@ docker run -v $(pwd)/docker_shared_dir/:/theorymine/docker_shared_dir \
   /bin/bash
 ```
 
-From that shell you can then run theorem synthesis.
+Note the `-v` command shares the local `docker_shared_dir` directory between
+your external docker environment with the directory
+`/theorymine/docker_shared_dir` inside the docker environment.
+
+From that shell you can then run theorem synthesis,
+or certificate generation/processing.
 
 ## To mine theorems
 

@@ -3,7 +3,11 @@
 FROM theorymine/isaplanner
 MAINTAINER Lucas Dixon <lucas.dixon@gmail.com>
 
+# node/npm v6.
 RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+# Yarn setup
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
 # Install additional php tools
 RUN apt-get update && apt-get install -y \
@@ -11,7 +15,8 @@ RUN apt-get update && apt-get install -y \
   python-pip \
   build-essential \
   nodejs \
-  curl
+  curl \
+  yarn
 
 RUN pip install --upgrade pip && pip install --upgrade virtualenv
 
@@ -19,7 +24,7 @@ RUN mkdir -p /theorymine-docker/
 ADD . /theorymine-docker/
 WORKDIR /theorymine-docker/
 
-RUN npm install -g yarn typescript mocha
+RUN npm install typescript mocha
 RUN yarn install
 RUN yarn run build
 
