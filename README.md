@@ -167,8 +167,16 @@ Install local node package dependencies (specified in the package.json file):
 yarn install
 ```
 
+Makes sure there is a template `config.json` file in `build/`
+
+```
+yarn run setup
+```
+
 Build the typescript/node code locally (used for top-level scripting):
 
 ```
 yarn run build
 ```
+
+Built files end up in the `build/tools` directory.
