@@ -20,9 +20,9 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install --upgrade pip && pip install --upgrade virtualenv
 
-RUN mkdir -p /theorymine-docker/
-ADD . /theorymine-docker/
-WORKDIR /theorymine-docker/
+RUN mkdir -p /theorymine/
+ADD . /theorymine/
+WORKDIR /theorymine/
 
 RUN npm install typescript mocha
 RUN yarn install
@@ -34,7 +34,7 @@ RUN yarn run build
 RUN echo "id:1"
 
 # Create the Isabelle image for the math-robot.
-RUN cd /theorymine-docker/external_deps/math-robot/ && \
+RUN cd /theorymine/external_deps/math-robot/ && \
   /usr/local/Isabelle2015/bin/isabelle build \
     -d /usr/local/Isabelle2015/contrib/IsaPlanner \
     -d . \
