@@ -151,6 +151,8 @@ async function generateLatexFiles(latexJsonBits: LatexJsonBits, outputDir: strin
 async function main(args : Args) {
   let conf : config.Config = JSON.parse(fs.readFileSync(args.configPath, 'utf8'));
 
+  console.log('loaded config');
+
   let latexJsonBits : LatexJsonBits;
   let generate_certificate_files : boolean = false;
   if (args.inputCid && args.inputFile) {
@@ -158,8 +160,10 @@ async function main(args : Args) {
   } else if (args.inputCid) {
     let result = await promised_request.post(
       conf.server + '/?go=latex_bits_json',
-      { form: { pass: conf.pass, cid: args.inputCid } });
+      { form: { cid: args.inputCid } });
+    console.log('about to parse result.body...');
     latexJsonBits = JSON.parse(result.body);
+    console.log('did it!');
     fs.mkdirpSync(args.outputDir);
     fs.writeFileSync(
         path.join(args.outputDir, 'latex_bits.json'),
