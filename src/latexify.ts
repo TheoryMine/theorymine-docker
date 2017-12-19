@@ -1,13 +1,8 @@
-import * as path from 'path';
-import * as config from './config';
-import * as promised_request from './promised_request';
-import * as theorymine_latex from './theorymine_latex';
-import * as fs from 'fs-extra';
-import * as yargs from 'yargs';
-import * as escape_regexp from 'escape-string-regexp';
-import * as child_process from 'child_process';
-
 /*
+Tool to convert TheoryMine HTML formatted theorems to Latex.
+
+Example usage:
+
 export THEORYMINE_CERT_ID=16327f93873b5723b3939d4b54223b226f39f
 node build/tools/latexify.js \
   --inputCid=$THEORYMINE_CERT_ID \
@@ -27,8 +22,16 @@ node build/tools/latexify.js \
 node build/tools/latexify.js \
   --inputCid=16327f93873b5723b3939d4b54223b226f39f \
   --outputDir=tmp
-
 */
+
+import * as path from 'path';
+import * as config from './config';
+import * as promised_request from './promised_request';
+import * as theorymine_latex from './theorymine_latex';
+import * as fs from 'fs-extra';
+import * as yargs from 'yargs';
+import * as escape_regexp from 'escape-string-regexp';
+import * as child_process from 'child_process';
 
 // Command line arguments.
 interface Args {
@@ -47,7 +50,6 @@ interface LatexJsonBits {
   thy_title: string;
   thy_body: string;
 };
-
 
 function runTex(outputDir: string) : void {
   console.log('Processing certificate...');

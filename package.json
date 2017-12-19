@@ -13,10 +13,12 @@
   "dependencies": {
     "@types/escape-string-regexp": "^0.0.32",
     "@types/fs-extra": "^4.0.3",
+    "@types/mysql": "^2.15.2",
     "concurrently": "^3.4.0",
     "escape-string-regexp": "^1.0.5",
     "fs-extra": "^4.0.2",
     "googleapis": "^17.0.0",
+    "mysql": "^2.15.0",
     "nodemon": "^1.12.1",
     "request": "^2.78.0",
     "yargs": "^8.0.2"
