@@ -1,3 +1,32 @@
+/*
+Simple library to convert html-ified theorymine format to latex.
+
+Example TheoryMine HTML format for a Theory:
+
+<table><tr><td align=\"center\" width=\"100%\">
+  T<sub>14<\/sub> = C<sub>z<\/sub>(Bool) | C<sub>y<\/sub>(T<sub>14<\/sub>, Bool)
+<br><br>
+f<sub>&zeta;&phi;<\/sub> : T<sub>14<\/sub> &times;  &#8469; &#8594; &#8469;
+ <\/td><\/tr><\/table>
+ <table>
+ <tr><td width=\"48%\" align=\"right\">
+   f<sub>&zeta;&phi;<\/sub>(C<sub>z<\/sub>(a), b)
+ <\/td><td width=\"4%\" align=\"center\">=<\/td><td width=\"48%\" align=\"left\">
+  Suc(b)
+  <\/td><\/tr>
+  <tr><td width=\"48%\" align=\"right\">
+  f<sub>&zeta;&phi;<\/sub>(C<sub>y<\/sub>(a, b), c)
+  <\/td><td width=\"4%\" align=\"center\">=<\/td><td width=\"48%\" align=\"left\">
+    Suc(f<sub>&zeta;&phi;<\/sub>(a, Suc(Suc(f<sub>&zeta;&phi;<\/sub>(a, zero)))))
+  <\/td><\/tr>
+<\/table>
+
+Example TheoryMine HTML format for a Theorem statement:
+
+f<sub>&zeta;&phi;<\/sub>(a, f<sub>&zeta;&phi;<\/sub>(a, b)) = f<sub>&zeta;&phi;<\/sub>(a, Suc(b))
+
+See the theorymine_latex_test file for more details.
+*/
 const replacements : { [key:string]: string} = {
   '&#39;': '\'',
   '&#913;': 'A',
