@@ -103,7 +103,7 @@ async function generateLatexFiles(latexJsonBits: LatexJsonBits, outputDir: strin
   let thmBody = theorymine_latex.formulaToLatex(
     theorymine_latex.textToLatex(latexJsonBits.thm_body));
   console.log('*****: thmBody length: ' + thmBody.length);
-  if (thmBody.length > 80) {
+  if (thmBody.length > 90) {
     thmBody = thmBody.replace('=', '=\\\\\n');
   }
 
