@@ -4,16 +4,16 @@ This repo contains the tools and Docker image to setup TheoryMine. It assumes yo
 
 ## Install and setup of theorymine-docker
 
-1. Get a checkout of theorymine-docker.
+1. Get a checkout of theorymine-docker by running: 
 
   ```bash
   git clone git@github.com:TheoryMine/theorymine-docker.git
   cd theorymine-docker
   ```
 
-2. Create a `config.json` file in the build directory, like so:
+2. Create a `config.json` file in the build directory, by running a command like so:
 
-  ```
+  ```bash
   echo \
     '{ "server": "http://theorymine.com" }' \
     > build/config.json
@@ -21,15 +21,15 @@ This repo contains the tools and Docker image to setup TheoryMine. It assumes yo
 
   In future, we'll be moving any passwords here, so that they don't live in the repository.
 
-3. Now you can setup the python environment and build the docker image:
+3. Now you can setup the python environment and build the docker image by running:
 
-  ```
+  ```bash
   python ./setup.py
   ```
 
   The key thing this does is build the needed docker images:
 
-  ```
+  ```bash 
   docker build -t theorymine/isaplanner external_deps/IsaPlanner/
   docker build -t theorymine/theorymine .
   ```
@@ -120,7 +120,7 @@ This will put the generated certificate files into a directory
 You can re-create the latex files
 (without downloading an update `latex_bits.json` file) using:
 
-```
+```bash
 node build/tools/latexify.js \
   --inputFile=docker_shared_dir/$THEORYMINE_CERT_ID/latex_bits.json \
   --outputDir=docker_shared_dir/$THEORYMINE_CERT_ID
@@ -129,7 +129,7 @@ node build/tools/latexify.js \
 If you hack the latex locally, and just want to rerun the `pdflatex` and
 `convert` commands to regenerate the pdfs and jpgs, run:
 
-```
+```bash
 node build/tools/latexify.js \
   --outputDir=docker_shared_dir/$THEORYMINE_CERT_ID
 ```
@@ -157,13 +157,13 @@ Install latex, node (and npm, using [nvm](https://github.com/creationix/nvm#inst
 
 Install the relevant global npm packages:
 
-```
+```bash
 npm install -g yarn typescript mocha
 ```
 
 Install local node package dependencies (specified in the package.json file):
 
-```
+```bash
 yarn install
 ```
 
