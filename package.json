@@ -21,6 +21,7 @@
     "mysql": "^2.15.0",
     "nodemon": "^1.12.1",
     "request": "^2.78.0",
+    "ts-node": "^5.0.0",
     "yargs": "^8.0.2"
   },
   "devDependencies": {
