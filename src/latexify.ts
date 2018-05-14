@@ -40,6 +40,7 @@ interface Args {
   inputCid ?: string,
   inputFile ?: string,
   outputDir : string,
+  lang: string,
 };
 
 interface LatexJsonBits {
@@ -85,16 +86,16 @@ function runTex(outputDir: string) : void {
     `convert -gravity South -chop 0x1000 -density 400 "thy.pdf" "thy.jpg"`,
     {stdio:[process.stdin, process.stdout, process.stderr]});
 
-  console.log('Processing brouchure...');
+  console.log('Processing brochure...');
   child_process.execSync(`cd ${outputDir} && ` +
-    `pdflatex -interaction nonstopmode -output-format pdf brouchure.tex`,
+    `pdflatex -interaction nonstopmode -output-format pdf brochure.tex`,
     {stdio:[process.stdin, process.stdout, process.stderr]});
   child_process.execSync(`cd ${outputDir} && ` +
-    `pdflatex -interaction nonstopmode -output-format pdf brouchure.tex`,
+    `pdflatex -interaction nonstopmode -output-format pdf brochure.tex`,
     {stdio:[process.stdin, process.stdout, process.stderr]});
 }
 
-async function generateLatexFiles(latexJsonBits: LatexJsonBits, outputDir: string) {
+async function generateLatexFiles(latexJsonBits: LatexJsonBits, outputDir: string, lang: string) {
   console.log(JSON.stringify(latexJsonBits, null, 2));
 
   let thyParts = theorymine_latex.thyToLatex(
@@ -131,21 +132,21 @@ async function generateLatexFiles(latexJsonBits: LatexJsonBits, outputDir: strin
     Object.keys(replacements).map(escape_regexp).join('|') + ')', 'g');
   // console.log(replacements_regexp);
 
-  await fs.copy('latex_templates/en', outputDir);
-
-  function fillTemplateAndSave(templateFilename:string) {
+  await fs.copy(path.join('latex_templates', lang), outputDir);
+  
+  function fillTemplateAndSave(templateFilename:string, lang: string) {
     const template = fs.readFileSync(
-      path.join('latex_templates/en',templateFilename), { encoding: 'utf-8' });
+      path.join('latex_templates',lang,templateFilename), { encoding: 'utf-8' });
     let output = template.replace(replacements_regexp,
       (_, matchedString) => { return replacements[matchedString]; });
     fs.writeFileSync(
       path.join(outputDir, templateFilename), output, {encoding: 'utf-8'});
   }
 
-  fillTemplateAndSave('certificate.tex');
-  fillTemplateAndSave('brouchure.tex');
-  fillTemplateAndSave('thm.tex');
-  fillTemplateAndSave('thy.tex');
+  fillTemplateAndSave('certificate.tex', lang);
+  fillTemplateAndSave('brochure.tex', lang);
+  fillTemplateAndSave('thm.tex', lang);
+  fillTemplateAndSave('thy.tex', lang);
 }
 
 async function main(args : Args) {
@@ -164,10 +165,10 @@ async function main(args : Args) {
         path.join(args.outputDir, 'latex_bits.json'),
         result.body,
         { encoding: 'utf-8' });
-    await generateLatexFiles(latexJsonBits, args.outputDir);
+    await generateLatexFiles(latexJsonBits, args.outputDir, args.lang);
   } else if (args.inputFile) {
     latexJsonBits = JSON.parse(fs.readFileSync(args.inputFile, { encoding: 'utf-8' }));
-    await generateLatexFiles(latexJsonBits, args.outputDir);
+    await generateLatexFiles(latexJsonBits, args.outputDir, args.lang);
   }
 
   runTex(args.outputDir);
@@ -187,7 +188,11 @@ let args = yargs
     .option('outputDir', {
       describe: 'Directory to write the output files to'
     })
+    .option('lang', {
+      describe: 'Language to write the output files in'
+    })
     .default('configPath', 'build/config/config.json')
+    .default('lang', 'en')
     .demandOption(['configPath', 'outputDir'],
       'Please provide at least --outputDir (and one of --input_cid or --inputJson).')
     .help()
