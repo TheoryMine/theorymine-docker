@@ -2,7 +2,11 @@
 
 This repo contains the tools and Docker image to setup TheoryMine. It assumes you have [docker](https://www.docker.com/) installed and setup.
 
+If you want to run scripts outside of Docker, e.g. to generate and upload certificates, make sure you have [nodejs](https://nodejs.org/), [npm](https://www.npmjs.com/) and [yarn](https://yarnpkg.com/) installed. 
+Recommended nodejs install is using [nvm](https://github.com/creationix/nvm#installation).
+
 ## Install and setup of theorymine-docker
+
 
 1. Get a checkout of theorymine-docker by running: 
 
@@ -25,6 +29,9 @@ This repo contains the tools and Docker image to setup TheoryMine. It assumes yo
 
   ```bash
   python ./setup.py
+  # To install and build so you can run locally, also run: 
+  yarn install
+  yarn run build
   ```
 
   The key thing this does is build the needed docker images:
