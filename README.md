@@ -18,9 +18,8 @@ Recommended nodejs install is using [nvm](https://github.com/creationix/nvm#inst
 2. Create a `config.json` file in the build directory, by running a command like so:
 
   ```bash
-  echo \
-    '{ "server": "http://theorymine.com" }' \
-    > build/config.json
+  rsync -a --ignore-existing config.template.json ./build/config.json
+  # Now edit the `build/config.json` file to include the password.
   ```
 
   In future, we'll be moving any passwords here, so that they don't live in the repository.
